@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "442689531160",
+    "firebase_url": "https://firewater-42397013.firebaseio.com",
+    "project_id": "firewater-42397013",
+    "storage_bucket": "firewater-42397013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442689531160:android:f8f2565bfe489de1",
+        "android_client_info": {
+          "package_name": "com.game.firewater"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442689531160-khin3f939ubk21aeq7tvi7vbql53cevl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "442689531160-beu4jodket27voupi2f7ogi9ddpeg0kd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.game.firewater",
+            "certificate_hash": "bb58d71e552a453e8e9c79bb0eea3645347498de"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEkFfp5DLkpdI8hr-nfecTvrSNKY2tSxc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442689531160-khin3f939ubk21aeq7tvi7vbql53cevl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
