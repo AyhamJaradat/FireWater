@@ -15,7 +15,7 @@ import com.google.android.gms.games.Games;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    /*Main Activity*/
     private static final String TAG = "MyLittleGame";
     private Button mainButton;
     private TextView scoreView;
