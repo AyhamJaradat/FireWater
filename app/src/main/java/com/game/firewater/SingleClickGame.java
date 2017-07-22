@@ -13,7 +13,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 
-public class MainActivity extends AppCompatActivity {
+public class SingleClickGame extends AppCompatActivity {
 
     /*Main Activity in app*/
     private static final String TAG = "MyLittleGame";
