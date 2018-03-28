@@ -10,7 +10,7 @@ import utils.Constants;
  * Created by Ayham on 8/13/2017.
  */
 
-public class FallingCharacter extends GameCharacter implements Constants{
+public class FallingCharacter extends GameCharacter implements Constants {
 
 
     // one rwo based on movement direction from top to butom
@@ -33,23 +33,25 @@ public class FallingCharacter extends GameCharacter implements Constants{
     private long fallingObjectTime = -1;
     private boolean amIFire;
     private int difficultyLevel;
+    private boolean isMultiplayer = false;
 
 
-    public FallingCharacter(GameSurface gameSurface, Bitmap image, int rowCount, int colCount, int x, int y, String type, boolean amIFire, int diffLevel) {
+    public FallingCharacter(GameSurface gameSurface, Bitmap image, int rowCount, int colCount, int x, int y, String type, boolean amIFire, int diffLevel, boolean isMultiplayer) {
         super(image, rowCount, colCount, x, y);
 
         this.gameSurface = gameSurface;
         this.type = type;
         this.amIFire = amIFire;
         this.difficultyLevel = diffLevel;
+        this.isMultiplayer = isMultiplayer;
         this.canvasHeight = this.gameSurface.getHeight();
-        if(this.difficultyLevel ==1 || this.difficultyLevel == 2  ||this.difficultyLevel == 3) {
+        if (this.difficultyLevel == 1 || this.difficultyLevel == 2 || this.difficultyLevel == 3) {
             VELOCITY = VELOCITY * this.canvasHeight;
             movingVectorY = movingVectorY * this.canvasHeight;
-        }else if(this.difficultyLevel ==4){
+        } else if (this.difficultyLevel == 4) {
             VELOCITY = 0.0004f * this.canvasHeight;
             movingVectorY = 0.01f * this.canvasHeight;
-        }else {
+        } else {
             VELOCITY = 0.0006f * this.canvasHeight;
             movingVectorY = 0.01f * this.canvasHeight;
         }
@@ -135,14 +137,16 @@ public class FallingCharacter extends GameCharacter implements Constants{
         // change trancperancy based on time passed
         int trancparancy = 255;
         long now = System.currentTimeMillis();
-        if (!this.amIFire && this.type.equals(FIRE_TYPE) || this.amIFire && this.type.equals(WATER_TYPE)) {
-            float yDestancePerc = (float)y /this.canvasHeight;
+        if (this.isMultiplayer) {
+            if (!this.amIFire && this.type.equals(FIRE_TYPE) || this.amIFire && this.type.equals(WATER_TYPE)) {
+                float yDestancePerc = (float) y / this.canvasHeight;
 
 //            trancparancy = getTrancparancyBasedOnLevel(this.difficultyLevel, yDestancePerc);
-            if (yDestancePerc >0.15){
-                trancparancy =0;
-            }
+                if (yDestancePerc > 0.15) {
+                    trancparancy = 0;
+                }
 
+            }
         }
 
         Bitmap bitmap = this.getCurrentMoveBitmap();
@@ -160,7 +164,7 @@ public class FallingCharacter extends GameCharacter implements Constants{
             case 2:
                 if (yDestancePerc > 0.6) {
                     tranc = 80;
-                } else if (yDestancePerc >0.4) {
+                } else if (yDestancePerc > 0.4) {
                     tranc = 140;
                 }
                 break;
@@ -175,7 +179,7 @@ public class FallingCharacter extends GameCharacter implements Constants{
             case 5:
                 if (yDestancePerc > 0.4) {
                     tranc = 0;
-                } else if (yDestancePerc >0.3) {
+                } else if (yDestancePerc > 0.3) {
                     tranc = 100;
                 }
                 break;

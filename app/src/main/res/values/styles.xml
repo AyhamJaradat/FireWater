@@ -78,7 +78,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-
+    <!--@color/PopupColor -->
     <style name="InvPopup" parent="@style/LLScreen">
         <item name="android:background">@color/PopupColor</item>
         <item name="android:padding">10dp</item>
@@ -140,7 +140,7 @@
     <style name="MainScreenButtonBlurb" parent="@style/GameBlurb">
         <item name="android:layout_marginBottom">20dp</item>
     </style>
-
+<!--<item name="android:textColor">@color/PopupTextColor</item>-->
     <style name="InvPopupText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>

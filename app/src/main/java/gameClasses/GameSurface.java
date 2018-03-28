@@ -48,6 +48,7 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
     //    private MainCharacter characters;
     private final List<MainCharacter> mainCharacterList = new ArrayList<MainCharacter>();
     private final List<Explosion> explosionList = new ArrayList<Explosion>();
+    private final List<GoToAnimiation> goToAnimList = new ArrayList<GoToAnimiation>();
     private final List<FallingCharacter> fallingObjects = new ArrayList<FallingCharacter>();
     private GameThread gameThread;
     //    sounds ids
@@ -69,9 +70,10 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
     private boolean amIFire;
     private String timer;
     private boolean isGameplaying;
-    private Bitmap bkBitmap, explosionBitmap, waterExplosionBitmap, waterDisappearBitmap, fireDisappearBitmap, startsBitmap, fireFallingCharBitmap, waterFallingCharBitmap, fireCharacterBtimap, waterCharacterBtimap;
+    private Bitmap bkBitmap, explosionBitmap, waterExplosionBitmap, waterDisappearBitmap, fireDisappearBitmap, startsBitmap, fireFallingCharBitmap, waterFallingCharBitmap, fireCharacterBtimap, waterCharacterBtimap, goToAnimBitmap;
     private Paint timerTextPaint, timertimePaint;
     private boolean isNextFallingFire = false;
+    private boolean isMultiplayer = false;
 
     private int secondsScore = 0;
     private int secondLeft = 0;
@@ -87,10 +89,11 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
     private long intervalSeconds = 1 * 1000;
     private int lastfallingSecond = 3 * 60;
 
-    public GameSurface(Context context, boolean amIFire) {
+    public GameSurface(Context context, boolean amIFire, boolean isMultiplayer) {
         super(context);
 
         this.amIFire = amIFire;
+        this.isMultiplayer = isMultiplayer;
         this.mainActivityContext = context;
         // Make Game Surface focusable so it can handle events. .
         this.setFocusable(true);
@@ -373,6 +376,7 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
         waterFallingCharBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.falling_water);
         fireCharacterBtimap = BitmapFactory.decodeResource(this.getResources(), R.drawable.fire_character);
         waterCharacterBtimap = BitmapFactory.decodeResource(this.getResources(), R.drawable.water_animation_small_size);
+        goToAnimBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.go_animiation);
 
 
         // style for word Time left
@@ -461,9 +465,10 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
 
     /**
      * update timer time to synchronize with other player
+     *
      * @param time
      */
-    public void updateMyTimerToSynchronize(long time){
+    public void updateMyTimerToSynchronize(long time) {
         customCountDownTimer.updateTime(time);
     }
 
@@ -546,6 +551,11 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
         for (Explosion explosion : this.explosionList) {
             explosion.update();
         }
+        // update go to animation
+        for (GoToAnimiation goToAnim : this.goToAnimList) {
+            goToAnim.update();
+        }
+
         // update falling object positions
         for (FallingCharacter fallingCharacter : this.fallingObjects) {
             fallingCharacter.update();
@@ -578,6 +588,16 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
             if (explosion.isFinish()) {
                 // If explosion finish, Remove the current element from the iterator & list.
                 iterator.remove();
+                continue;
+            }
+        }
+        // remove gotoAnim object if they finished
+        Iterator<GoToAnimiation> goToIterator = this.goToAnimList.iterator();
+        while (goToIterator.hasNext()) {
+            GoToAnimiation goToAnim = goToIterator.next();
+            if (goToAnim.isFinish()) {
+                // If explosion finish, Remove the current element from the iterator & list.
+                goToIterator.remove();
                 continue;
             }
         }
@@ -617,6 +637,10 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
         for (Explosion explosion : this.explosionList) {
             explosion.draw(canvas);
         }
+        // update go to animation
+        for (GoToAnimiation goToAnim : this.goToAnimList) {
+            goToAnim.draw(canvas);
+        }
 
         if (this.isGameplaying) {
             // check end of game
@@ -634,22 +658,22 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
             if (difficultyLevel == 4 || difficultyLevel == 5 || difficultyLevel == 3) {
                 float xRandomPerc = generator.nextInt(101);
                 int XRandomPixcel = (int) ((xRandomPerc / 100) * this.getWidth());
-                FallingCharacter fallingCharacter = new FallingCharacter(this, fireFallingCharBitmap, 1, 3, XRandomPixcel, 50, FIRE_TYPE, this.amIFire, difficultyLevel);
+                FallingCharacter fallingCharacter = new FallingCharacter(this, fireFallingCharBitmap, 1, 3, XRandomPixcel, 50, FIRE_TYPE, this.amIFire, difficultyLevel, this.isMultiplayer);
                 this.fallingObjects.add(fallingCharacter);
                 float x1RandomPerc = generator.nextInt(101); //20%
                 int X1RandomPixcel = (int) ((x1RandomPerc / 100) * this.getWidth());
-                FallingCharacter fallingCharacter1 = new FallingCharacter(this, waterFallingCharBitmap, 1, 4, X1RandomPixcel, 50, WATER_TYPE, this.amIFire, difficultyLevel);
+                FallingCharacter fallingCharacter1 = new FallingCharacter(this, waterFallingCharBitmap, 1, 4, X1RandomPixcel, 50, WATER_TYPE, this.amIFire, difficultyLevel, this.isMultiplayer);
                 this.fallingObjects.add(fallingCharacter1);
             } else if (isNextFallingFire) {
                 float xRandomPerc = generator.nextInt(101);
                 int XRandomPixcel = (int) ((xRandomPerc / 100) * this.getWidth());
-                FallingCharacter fallingCharacter = new FallingCharacter(this, fireFallingCharBitmap, 1, 3, XRandomPixcel, 50, FIRE_TYPE, this.amIFire, difficultyLevel);
+                FallingCharacter fallingCharacter = new FallingCharacter(this, fireFallingCharBitmap, 1, 3, XRandomPixcel, 50, FIRE_TYPE, this.amIFire, difficultyLevel, this.isMultiplayer);
                 this.fallingObjects.add(fallingCharacter);
             } else {
 
                 float x1RandomPerc = generator.nextInt(101); //20%
                 int X1RandomPixcel = (int) ((x1RandomPerc / 100) * this.getWidth());
-                FallingCharacter fallingCharacter1 = new FallingCharacter(this, waterFallingCharBitmap, 1, 4, X1RandomPixcel, 50, WATER_TYPE, this.amIFire, difficultyLevel);
+                FallingCharacter fallingCharacter1 = new FallingCharacter(this, waterFallingCharBitmap, 1, 4, X1RandomPixcel, 50, WATER_TYPE, this.amIFire, difficultyLevel, this.isMultiplayer);
                 this.fallingObjects.add(fallingCharacter1);
             }
             lastFallingDrawingTime = System.nanoTime();
@@ -855,7 +879,6 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
                         // or I am water and checking for water character if eat something
                         if (chibi.getType().equalsIgnoreCase(fallingCharacter.getType())) {
                             // eat some .. add score
-
                             // send msg to other screen
                             ((FireGameActivity) this.mainActivityContext).showStarForCharacterOnParticipantScreen(chibi.getType());
                             ((FireGameActivity) this.mainActivityContext).incrementMyScore();
@@ -870,7 +893,29 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
                             this.fallingObjects.remove(i);
                             i--;
                         } else {
-                            // DO nth
+                            // DO nth in multiplayer mode
+                            if (!this.isMultiplayer) {
+                                // this character should die ,, kill him here
+                                // collision detected
+                                chibi.decrementLives();
+                                // remove falling object
+                                this.fallingObjects.remove(i);
+                                i--;
+                                if (chibi.getLives() <= 0) {
+                                    // remove character
+                                    iterator.remove();
+                                }
+                                // draw explosion effect
+                                // Create Explosion object.
+                                Explosion explosion;
+                                if (chibi.getType().equalsIgnoreCase(WATER_TYPE)) {
+                                    explosion = new Explosion(this, explosionBitmap, chibi.getX(), chibi.getY(), chibi.getType(), 5, 5);
+                                } else {
+                                    explosion = new Explosion(this, waterExplosionBitmap, chibi.getX() - 200, chibi.getY() - 200, chibi.getType(), 4, 5);
+                                }
+                                this.explosionList.add(explosion);
+                            }
+
                         }
 
 
@@ -878,7 +923,22 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
                         // I am fire and checking if water character hit fire object
                         // or I am water and checking if fire character hit water object
                         if (chibi.getType().equalsIgnoreCase(fallingCharacter.getType())) {
-                            // do nth
+                            // do nth in multiplayer mode
+                            if (!this.isMultiplayer) {
+                                ((FireGameActivity) this.mainActivityContext).incrementParticipantScore();
+//                                ((FireGameActivity) this.mainActivityContext).incrementMyScore();
+                                Explosion explosion;
+                                if (chibi.getType().equalsIgnoreCase(WATER_TYPE)) {
+                                    explosion = new Explosion(this, startsBitmap, fallingCharacter.getX() - 5, fallingCharacter.getY() + 5, WATER_STAR_TYPE, 2, 6);
+                                } else {
+                                    explosion = new Explosion(this, startsBitmap, fallingCharacter.getX(), fallingCharacter.getY() + 5, FIRE_STAR_TYPE, 2, 6);
+                                }
+                                this.explosionList.add(explosion);
+                                // remove falling object
+                                this.fallingObjects.remove(i);
+                                i--;
+                            }
+
                         } else {
                             // this character should die ,, kill him here and send msg to other player
                             // collision detected
@@ -918,14 +978,10 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
     public void surfaceCreated(SurfaceHolder holder) {
 
 
-        Log.d("Ayham1", "created");
         // create background bitmap
 //        Bitmap tempBmp;
-        bkBitmap = MyUtils.decodeSampledBitmapFromResource(getResources(), R.drawable.bk_good, this.getWidth(), this.getHeight());
-//        if (this.amIFire)
-//            bkBitmap = MyUtils.decodeSampledBitmapFromResource(getResources(), R.drawable.fire_background_xhdpi, this.getWidth(), this.getHeight());
-//        else
-//            bkBitmap = MyUtils.decodeSampledBitmapFromResource(getResources(), R.drawable.water_background_xhdpi, this.getWidth(), this.getHeight());
+//        bkBitmap = MyUtils.decodeSampledBitmapFromResource(getResources(), R.drawable.bk_good, this.getWidth(), this.getHeight());
+        bkBitmap = MyUtils.decodeSampledBitmapFromResource(getResources(), R.drawable.background, this.getWidth(), this.getHeight());
 
 
         // update chibi posotions and canvuas dimensions
@@ -975,73 +1031,10 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
         waterFallingCharBitmap.recycle();
         fireCharacterBtimap.recycle();
         waterCharacterBtimap.recycle();
+        goToAnimBitmap.recycle();
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//
-//            int x = (int) event.getX();
-//            int y = (int) event.getY();
-//
-//            Iterator<MainCharacter> iterator = this.mainCharacterList.iterator();
-//
-//            while (iterator.hasNext()) {
-//                MainCharacter chibi = iterator.next();
-//                if (chibi.getX() < x && x < chibi.getX() + chibi.getWidth()
-//                        && chibi.getY() < y && y < chibi.getY() + chibi.getHeight()) {
-//                    // Remove the current element from the iterator and the list.
-//                    iterator.remove();
-//
-//                    // Create Explosion object.
-//                    Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.explosion);
-//                    Explosion explosion = new Explosion(this, bitmap, chibi.getX(), chibi.getY());
-//
-//                    this.explosionList.add(explosion);
-//                }
-//            }
-//
-//
-//            for (MainCharacter chibi : mainCharacterList) {
-//                int movingVectorX = x - chibi.getX();
-//                int movingVectorY = y - chibi.getY();
-//                chibi.setMovingVector(movingVectorX, movingVectorY);
-//            }
-//            return true;
-//        }
-//        return false;
-//
-//
-////        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-////            int x = (int) event.getX();
-////            int y = (int) event.getY();
-////
-////            int movingVectorX = x - this.chibi1.getX();
-////            int movingVectorY = y - this.chibi1.getY();
-////
-////            this.chibi1.setMovingVector(movingVectorX, movingVectorY);
-////            return true;
-////        }
-////        return false;
-//    }
 
-    public void movePlayerTo(String id, float direction) {
-
-        for (MainCharacter chibi : mainCharacterList) {
-
-            float movingVectorX = direction;
-            int movingVectorY = 0;
-            if (id == null) {
-                // single player
-                // move all now
-                chibi.setMovingVector(movingVectorX, movingVectorY);
-            } else if (id.equalsIgnoreCase(chibi.getMyId())) {
-                // multiplayer
-                // only move my player
-                chibi.setMovingVector(movingVectorX, movingVectorY);
-            }
-        }
-    }
 
     /**
      * function to get the x position of a character in order to send it to other participiant
@@ -1098,4 +1091,73 @@ public class GameSurface extends SurfaceView implements Constants, SurfaceHolder
     public int getLeftTime() {
         return secondLeft;
     }
+
+    /**
+     * other player is teling me to move , show animation on my character
+     *
+     * @param direction
+     */
+    public void showGoToAnimiation(int direction) {
+
+        String type = "";
+        int x = direction == 0 ? this.getWidth() - 10 - (goToAnimBitmap.getWidth() / 2) : 10;
+        if (amIFire) {
+            type = direction == 0 ? "rightFire" : "leftFire";
+        } else {
+            type = direction == 0 ? "rightWater" : "leftWater";
+        }
+        //Bitmap image, int x, int y, int rowCount, int colCount, String type
+        GoToAnimiation goToAnim = new GoToAnimiation(goToAnimBitmap, x, this.getHeight() / 2, 6, 2, type);
+        this.goToAnimList.add(goToAnim);
+
+    }
+
+    /**
+     * in single player mode, move other player when touch send goTo msg btn
+     *
+     * @param direction
+     */
+    public void moveOtherPlayerTo(float direction) {
+        for (MainCharacter chibi : mainCharacterList) {
+            float movingVectorX = direction;
+            int movingVectorY = 0;
+            // single player
+            // move only other character
+            if (amIFire && chibi.getType().equalsIgnoreCase(WATER_TYPE)) {
+                chibi.setMovingVector(movingVectorX, movingVectorY);
+            } else if (!amIFire && chibi.getType().equalsIgnoreCase(FIRE_TYPE)) {
+                chibi.setMovingVector(movingVectorX, movingVectorY);
+            }
+
+        }
+    }
+
+    /**
+     * in both mode, when click on move player btn or recieve msg to move player
+     *
+     * @param id
+     * @param direction
+     */
+    public void movePlayerTo(String id, float direction) {
+
+        for (MainCharacter chibi : mainCharacterList) {
+
+            float movingVectorX = direction;
+            int movingVectorY = 0;
+            if (id == null) {
+                // single player
+                // move only my character
+                if (amIFire && chibi.getType().equalsIgnoreCase(FIRE_TYPE)) {
+                    chibi.setMovingVector(movingVectorX, movingVectorY);
+                } else if (!amIFire && chibi.getType().equalsIgnoreCase(WATER_TYPE)) {
+                    chibi.setMovingVector(movingVectorX, movingVectorY);
+                }
+            } else if (id.equalsIgnoreCase(chibi.getMyId())) {
+                // multiplayer
+                // only move my player
+                chibi.setMovingVector(movingVectorX, movingVectorY);
+            }
+        }
+    }
+
 }

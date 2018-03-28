@@ -3,7 +3,9 @@
     android:oneshot="false">
     <item
         android:drawable="@drawable/water_character_1"
-        android:duration="150" />
+        android:duration="150"
+        
+        />
     <item
         android:drawable="@drawable/water_character_2"
         android:duration="150" />

@@ -16,13 +16,13 @@
     <string name="invite_players_explanation">Invite friends to play a game.</string>
     <string name="see_invitations_explanation">See who is inviting you right now.</string>
     <string name="inv_popup_text">Incoming invitation!</string>
-    <string name="accept_popup_invite">Accept!</string>
+    <string name="accept_popup_invite">Accept</string>
     <string name="sign_out">Sign Out</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="instructions">Click the button as fast as you can!</string>
     <string name="game_problem">An error occurred while starting the game. Please try again.</string>
     <string name="click_me">Click me!</string>
-    <string name="is_inviting_you">is challenging you to a game!</string>
+    <string name="is_inviting_you">wants to play with you</string>
     <string name="signin_other_error">There was an issue with sign in. Please try again later.</string>
     <string name="app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
     <string name="license_failed">License check failed.</string>
@@ -32,4 +32,28 @@
     <string name="btn_left">Left</string>
     <string name="btn_right">Right</string>
     <string name="fire_play">Play Fire Game</string>
+
+    <!-- for voice RTC -->
+    <string name="pref_speakerphone_default">auto</string>
+    <string name="pref_speakerphone_key">speakerphone_preference</string>
+    <string name="channel_error_title">Connection error</string>
+    <string name="ok">OK</string>
+
+
+    <string name="status_exception_error">%1$s (status %2$d). %3$s.</string>
+    <string name="status_multiplayer_error_not_trusted_tester">Anyone you invite must be a trusted tester</string>
+    <string name="match_error_already_rematched">This rematch has already been started!</string>
+    <string name="client_reconnect_required">Games client reconnect required</string>
+    <string name="network_error_operation_failed">Network error: Operation failed</string>
+    <string name="internal_error">Internal error</string>
+    <string name="unexpected_status">Unexpected status: %1$s</string>
+    <string name="match_error_inactive_match">This match is inactive.</string>
+    <string name='match_error_locally_modified'>This match has locally-modified data.  This operation cannot be performed until the match is sent to the server.</string>
+    <string name="score_label">%1$s - Me</string>
+
+
+    <string name="achievement">Achievement</string>
+    <string name="your_progress_will_be_uploaded">Your existing achievements and score will be uploaded shortly.</string>
+
+
 </resources>
