@@ -208,10 +208,10 @@ public class FireGameActivity extends Activity implements Constants,
                 if (!amIFire) {
                     int msgCountId = (int) buf[1];
                     Log.d("timesynch recieved", "msgCountId" + msgCountId);
-                    if (msgCountId >= 0 && msgCountId < timeSynchroArray.length ) {
+                    if (msgCountId >= 0 && msgCountId < timeSynchroArray.length) {
                         // for indexes 0 , 1, 2, 3
                         timeSynchroArray[msgCountId] = System.currentTimeMillis();
-                    } else if (msgCountId == timeSynchroArray.length ) {
+                    } else if (msgCountId == timeSynchroArray.length) {
                         // if the last one
                         // for index 4 , read left time
                         updateMyGameTimer(((int) buf[2]) + 60);
@@ -1750,7 +1750,9 @@ public class FireGameActivity extends Activity implements Constants,
                 .setAutoMatchCriteria(autoMatchCriteria)
                 .build();
         // create room
-        mRealTimeMultiplayerClient.create(mRoomConfig);
+//        mRealTimeMultiplayerClient.create(mRoomConfig);
+        Games.getRealTimeMultiplayerClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .create(mRoomConfig);
     }
 
     private void showPleaseSignInDialog() {
@@ -2791,9 +2793,9 @@ public class FireGameActivity extends Activity implements Constants,
     public void showTestSettings(View v) {
         AlertDialog alertDialog = new AlertDialog.Builder(FireGameActivity.this).create();
         alertDialog.setTitle("Voice Mode Settings");
-        alertDialog.setMessage("Select one of the two Modes for Voice Using");
+        alertDialog.setMessage("Select one of the two Modes for Voice Using:");
         // Alert dialog button
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Voice as Call",
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Voice-as-Call",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Alert dialog action goes here
@@ -2803,7 +2805,7 @@ public class FireGameActivity extends Activity implements Constants,
                         dialog.dismiss();// use dismiss to cancel alert dialog
                     }
                 });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Voice as Hold-To-Talk",
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Hold-To-Talk",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Alert dialog action goes here
@@ -2981,24 +2983,24 @@ public class FireGameActivity extends Activity implements Constants,
 
         if (mSignedInAccount != googleSignInAccount) {
 
-            mSignedInAccount = googleSignInAccount;
+        mSignedInAccount = googleSignInAccount;
 
-            // update the clients
-            mRealTimeMultiplayerClient = Games.getRealTimeMultiplayerClient(this, googleSignInAccount);
-            mInvitationsClient = Games.getInvitationsClient(FireGameActivity.this, googleSignInAccount);
+        // update the clients
+        mRealTimeMultiplayerClient = Games.getRealTimeMultiplayerClient(this, googleSignInAccount);
+        mInvitationsClient = Games.getInvitationsClient(FireGameActivity.this, googleSignInAccount);
 
-            // get the playerId from the PlayersClient
-            PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
-            playersClient.getCurrentPlayer()
-                    .addOnSuccessListener(new OnSuccessListener<Player>() {
-                        @Override
-                        public void onSuccess(Player player) {
-                            mPlayerId = player.getPlayerId();
+        // get the playerId from the PlayersClient
+        PlayersClient playersClient = Games.getPlayersClient(this, googleSignInAccount);
+        playersClient.getCurrentPlayer()
+                .addOnSuccessListener(new OnSuccessListener<Player>() {
+                    @Override
+                    public void onSuccess(Player player) {
+                        mPlayerId = player.getPlayerId();
 
-                            switchToMainScreen();
-                        }
-                    })
-                    .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
+                        switchToMainScreen();
+                    }
+                })
+                .addOnFailureListener(createFailureListener("There was a problem getting the player id!"));
         }
 
         // if we have accomplishments to push, push them
@@ -3015,6 +3017,7 @@ public class FireGameActivity extends Activity implements Constants,
         // get the invitation from the connection hint
         // Retrieve the TurnBasedMatch from the connectionHint
         GamesClient gamesClient = Games.getGamesClient(FireGameActivity.this, googleSignInAccount);
+
 //        Google Play Games achievement unlocked popup showing
         gamesClient.setViewForPopups(findViewById(R.id.gps_popup));
         gamesClient.getActivationHint()
