@@ -1,11 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-Google Play game services IDs.
-Save this file as res/values/games-ids.xml in your project.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+    Google Play game services IDs.
+    Save this file as res/values/games-ids.xml in your project.
+    -->
 <resources>
-    <string name="app_id">442689531160</string>
-    <string name="package_name">com.game.firewater</string>
-    <string name="achievement_super_three_time_winning">CgkImNrokvEMEAIQAg</string>
-    <string name="leaderboard_leaderboard">CgkImNrokvEMEAIQAQ</string>
+    <!-- app_id -->
+    <string name="app_id" translatable="false">442689531160</string>
+    <!-- package_name -->
+    <string name="package_name" translatable="false">com.game.firewater</string>
+    <!-- achievement Super Three Time Winning -->
+    <string name="achievement_super_three_time_winning" translatable="false">CgkImNrokvEMEAIQAg</string>
+    <!-- achievement Game Playing Master -->
+    <string name="achievement_game_playing_master" translatable="false">CgkImNrokvEMEAIQBA</string>
+    <!-- achievement Single Mode Playing Master -->
+    <string name="achievement_single_mode_playing_master" translatable="false">CgkImNrokvEMEAIQBQ</string>
+    <!-- achievement Multi Player Master -->
+    <string name="achievement_multi_player_master" translatable="false">CgkImNrokvEMEAIQBg</string>
+    <!-- achievement Winning Single Mode game -->
+    <string name="achievement_winning_single_mode_game" translatable="false">CgkImNrokvEMEAIQBw</string>
+    <!-- achievement Winning Multiple Mode Game -->
+    <string name="achievement_winning_multiple_mode_game" translatable="false">CgkImNrokvEMEAIQCA</string>
+    <!-- leaderboard Best Single Score -->
+    <string name="leaderboard_best_single_score" translatable="false">CgkImNrokvEMEAIQAQ</string>
+    <!-- leaderboard Best Social Score -->
+    <string name="leaderboard_best_social_score" translatable="false">CgkImNrokvEMEAIQAw</string>
 </resources>
