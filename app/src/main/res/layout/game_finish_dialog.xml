@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="Signing Out !!"
+        android:textColor="@color/ButtonTextColor"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="95dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="Are You Sure ?"
+        android:textColor="@color/ButtonTextColor"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="65dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <Button
+            android:id="@+id/dialogButtonOK"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_btn_yes"
+            android:text="Play again"
+            android:textAllCaps="false"
+            android:textColor="@color/ButtonTextColor" />
+
+        <Button
+            android:id="@+id/dialogButtonCancel"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_btn_no"
+            android:text="Main Menu"
+            android:textAllCaps="false"
+            android:textColor="@color/ButtonTextColor" />
+    </LinearLayout>
+
+</LinearLayout>
